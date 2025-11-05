@@ -15,6 +15,7 @@ int main() {
         }
     }
 
+    
     // 2. Definir coordenadas iniciais dos navios
     int linha_navio1 = 2, coluna_navio1 = 3; // horizontal
     int linha_navio2 = 5, coluna_navio2 = 6; // vertical
