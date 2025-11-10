@@ -1,50 +1,85 @@
 #include <stdio.h>
 
-
-#define TAM 10
-#define TAM_NAVIO 3
+#define TAM 10       // Tamanho do tabuleiro 10x10
+#define TAM_NAVIO 3  // Cada navio ocupa 3 posições
 
 int main() {
     int tabuleiro[TAM][TAM];
     int i, j;
 
-    // 1. Inicializar o tabuleiro com água (0)
+    // 1. Inicializar o tabuleiro com 0 (água)
     for (i = 0; i < TAM; i++) {
         for (j = 0; j < TAM; j++) {
             tabuleiro[i][j] = 0;
         }
     }
 
-    
-    // 2. Definir coordenadas iniciais dos navios
-    int linha_navio1 = 2, coluna_navio1 = 3; // horizontal
-    int linha_navio2 = 5, coluna_navio2 = 6; // vertical
+    // 2. Coordenadas iniciais dos navios
+    // Dois navios "retos" (horizontal e vertical)
+    int linha_navio1 = 2, coluna_navio1 = 1; // horizontal
+    int linha_navio2 = 5, coluna_navio2 = 7; // vertical
 
-    // 3. Validar se cabem no tabuleiro
-    if (coluna_navio1 + TAM_NAVIO <= TAM && linha_navio2 + TAM_NAVIO <= TAM) {
+    // Dois navios diagonais
+    int linha_navio3 = 0, coluna_navio3 = 0; // diagonal principal (↘)
+    int linha_navio4 = 6, coluna_navio4 = 9; // diagonal secundária (↙)
 
-        // 4. Posicionar navio 1 (horizontal)
+    // 3. Posicionar o navio 1 (horizontal)
+    if (coluna_navio1 + TAM_NAVIO <= TAM) {
         for (j = coluna_navio1; j < coluna_navio1 + TAM_NAVIO; j++) {
-            tabuleiro[linha_navio1][j] = 3;
+            if (tabuleiro[linha_navio1][j] == 0)
+                tabuleiro[linha_navio1][j] = 3;
+            else
+                printf("⚠️ Sobreposição detectada em (%d, %d)\n", linha_navio1, j);
         }
+    }
 
-        // 5. Posicionar navio 2 (vertical)
+    // 4. Posicionar o navio 2 (vertical)
+    if (linha_navio2 + TAM_NAVIO <= TAM) {
         for (i = linha_navio2; i < linha_navio2 + TAM_NAVIO; i++) {
-            // verificar se já há outro navio ali
             if (tabuleiro[i][coluna_navio2] == 0)
                 tabuleiro[i][coluna_navio2] = 3;
             else
-                printf("⚠️ Sobreposição detectada na posição (%d, %d)\n", i, coluna_navio2);
+                printf("⚠️ Sobreposição detectada em (%d, %d)\n", i, coluna_navio2);
         }
-
-    } else {
-        printf("Coordenadas inválidas! O navio não cabe no tabuleiro.\n");
-        return 1; // encerra o programa
     }
 
-    // 6. Exibir o tabuleiro
-    printf("\n=== TABULEIRO BATALHA NAVAL ===\n\n");
+    // 5. Posicionar o navio 3 (diagonal principal ↘)
+    if (linha_navio3 + TAM_NAVIO <= TAM && coluna_navio3 + TAM_NAVIO <= TAM) {
+        for (i = 0; i < TAM_NAVIO; i++) {
+            int linha = linha_navio3 + i;
+            int coluna = coluna_navio3 + i;
+            if (tabuleiro[linha][coluna] == 0)
+                tabuleiro[linha][coluna] = 3;
+            else
+                printf("⚠️ Sobreposição detectada em (%d, %d)\n", linha, coluna);
+        }
+    }
+
+    // 6. Posicionar o navio 4 (diagonal secundária ↙)
+    if (linha_navio4 + TAM_NAVIO <= TAM && coluna_navio4 - (TAM_NAVIO - 1) >= 0) {
+        for (i = 0; i < TAM_NAVIO; i++) {
+            int linha = linha_navio4 + i;
+            int coluna = coluna_navio4 - i;
+            if (tabuleiro[linha][coluna] == 0)
+                tabuleiro[linha][coluna] = 3;
+            else
+                printf("⚠️ Sobreposição detectada em (%d, %d)\n", linha, coluna);
+        }
+    }
+
+    // 7. Exibir o tabuleiro no console
+    printf("\n=== TABULEIRO BATALHA NAVAL (NÍVEL INTERMEDIÁRIO) ===\n\n");
+
+    // Cabeçalho de colunas
+    printf("   ");
+    for (j = 0; j < TAM; j++) {
+        printf("%d ", j);
+    }
+    printf("\n");
+
+    // Imprimir o tabuleiro linha por linha
     for (i = 0; i < TAM; i++) {
+        printf("%2d ", i);
         for (j = 0; j < TAM; j++) {
             printf("%d ", tabuleiro[i][j]);
         }
